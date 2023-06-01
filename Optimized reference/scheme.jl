@@ -287,7 +287,7 @@ end
 A, B, C, D = matrix_kl(5, 3, 64, 2, 3, 6)
 U, Un = polys(message)
 V = Un * D
-
+# println(sizeof(V))
 function verification(C, V, Un)
     cnt = 0
     for i in 1:20

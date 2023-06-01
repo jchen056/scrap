@@ -107,7 +107,6 @@ function find_kl_inverse(to_keep, S_inv)
 end
 
 function modify_neg_coeff(A, q)
-
     coeffs_map = Symbolics.value(A).dict#turn the polynomial into matrix
     B = 0#create our new polynomial
     for (key, value) in coeffs_map#iterate through the dict(monomial, coeffcients)
@@ -135,22 +134,7 @@ function modify_matrix_coef(matrix, q)
     return res
 end
 
-function random_permutation(k)
-    cols = [i for i in 1:k]
-    ncols = []
-    for i in 1:k
-        random_number = size(cols, 1)
-        a = rand(1:random_number)
-        append!(ncols, cols[a])
-        splice!(cols, a)
-    end
-    A = zeros(Num, k, k)
 
-    for i in 1:k
-        A[i, ncols[i]] = 1
-    end
-    return A
-end
 
 function matrix_kl(k, l, n, t, B, q)
     #generate upper unitriangular matrix
@@ -284,9 +268,33 @@ function polys(message)
     end
     return U, Un
 end
+
+
 A, B, C, D = matrix_kl(5, 3, 64, 2, 3, 6)
 U, Un = polys(message)
 V = Un * D
+
+file = open("/Users/jchen056/scrap/KAT/publicKey.txt", "w")
+for i in 1:Int(size(C, 1))
+    for j in 1:Int(size(C, 2))
+        write(file, string(C[i, j]))
+        write(file, "\n")
+    end
+    #     write(file,"\n")
+end
+close(file)
+filesize("/Users/jchen056/scrap/KAT/publicKey.txt.txt")
+
+file = open("/Users/jchen056/scrap/KAT/privateKey.txt", "w")
+for i in 1:Int(size(D, 1))
+    for j in 1:Int(size(D, 2))
+        write(file, string(D[i, j]))
+        write(file, "\n")
+    end
+    #     write(file,"\n")
+end
+close(file)
+filesize("/Users/jchen056/scrap/KAT/privateKey.txt.txt")
 
 function verification(C, V, Un)
     cnt = 0
